@@ -86,7 +86,7 @@ namespace sae
 	private:
 		struct Entry
 		{
-			friend bool operator==(const entity_type& _lhs, const entity_type& _rhs) noexcept
+			friend bool operator==(const Entry& _lhs, const entity_type& _rhs) noexcept
 			{
 				return _lhs.entity == _rhs;
 			};
@@ -278,7 +278,10 @@ namespace sae
 
 		ProcessorID insert(AbstractComponentProcessor<ECSBaseProcessorT>* _processor)
 		{
+			auto _id = _processor->id();
+			assert(!this->contains(_id));
 			this->processors_.push_back(std::move(_processor));
+			return _id;
 		};
 		auto* at(ProcessorID _id) const
 		{
